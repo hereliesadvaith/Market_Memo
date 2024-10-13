@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+from django.contrib.contenttypes.models import ContentType
+from importlib import import_module
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import viewsets
 
 
 @api_view(['GET'])
@@ -58,3 +61,21 @@ def get_routes(request):
         "status": "operational"
     }
     return Response(routes)
+
+
+class ORMViewSet(viewsets.ModelViewSet):
+    """
+    For orm calls
+    """
+    def get_queryset(self):
+        model = self.kwargs.get('model')
+        model_class =  ContentType.objects.get(model=model).model_class()
+        return model_class.objects.all()
+
+    def get_serializer_class(self):
+        model = self.kwargs.get('model')
+        serializer_class = getattr(
+            import_module('api.serializers.' + model + '_serializer'),
+            model.capitalize() + 'Serializer'
+        )
+        return serializer_class
