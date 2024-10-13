@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+
+@api_view(['GET'])
+def get_routes(request):
+    """
+    To return all the endpoints available in the API.
+    """
+    routes = {
+        "endpoints": [
+            {
+                'endpoint': '/api/token/',
+                'method': 'POST',
+                'description': 'Obtain a new token by providing username and password.'
+            },
+            {
+                'endpoint': '/api/token/refresh/',
+                'method': 'POST',
+                'description': 'Refresh an existing token using a refresh token.'
+            },
+            {
+                'endpoint': '/api/signup/',
+                'method': 'POST',
+                'description': 'Create a new user account.'
+            },
+            {
+                'endpoint': '/api/orm/<str:model>/',
+                'methods': [
+                    {
+                        'method': 'GET',
+                        'description': 'Retrieve all instances of a specified  model.'
+                    },
+                    {'method': 'POST',
+                     'description': 'Create a new instance of the specified model.'
+                    }
+                ]
+            },
+            {
+                'endpoint': '/api/orm/<str:model>/<str:id>/',
+                'methods': [
+                    {
+                        'method': 'GET',
+                        'description': 'Retrieve a specific instance of a model by ID.'
+                    },
+                    {
+                        'method': 'PUT',
+                        'description': 'Update a specific instance of a model by ID.'
+                    },
+                    {
+                        'method': 'DELETE',
+                        'description': 'Delete a specific instance of a model by ID.'
+                    }
+                ]
+            }
+        ],
+        "status": "operational"
+    }
+    return Response(routes)
