@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from importlib import import_module
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework.viewsets import ModelViewSet
 
 
 @api_view(['GET'])
@@ -63,7 +63,7 @@ def get_routes(request):
     return Response(routes)
 
 
-class ORMViewSet(viewsets.ModelViewSet):
+class ORMViewSet(ModelViewSet):
     """
     For orm calls
     """
