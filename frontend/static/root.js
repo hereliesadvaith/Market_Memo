@@ -1,11 +1,21 @@
-import { Component, onWillStart, mount, xml } from "@odoo/owl";
+import { Component, mount, useState, useSubEnv, xml } from "@odoo/owl";
 
 class Root extends Component {
   setup() {
-    onWillStart(async () => {
-      var result = await this.makeApiCall("/api/orm/strategy/1/", "GET");
-      console.log(result);
-    });
+    this.state = useState({
+      currentRoute: window.location.pathname
+    })
+    window.addEventListener("popstate", this.handlePopState.bind(this));
+  }
+
+  handleRouteChange(ev) {
+    ev.preventDefault();
+    window.history.pushState({}, "", ev.target.href);
+    this.state.currentRoute = window.location.pathname;
+  }
+
+  handlePopState() {
+    this.state.currentRoute = window.location.pathname;
   }
 
   async makeApiCall(url, method, data = null) {
@@ -22,7 +32,9 @@ class Root extends Component {
   }
 
   static template = xml`
-    <h1>Vite + OWL</h1>
+    <h1><t t-esc='state.currentRoute'/></h1>
+    <a href="/red" t-on-click="handleRouteChange">Red</a><br/>
+    <a href="/blue" t-on-click="handleRouteChange">Blue</a>
 `;
 }
 
