@@ -11,6 +11,7 @@ urlpatterns = [
     path('', views.get_routes, name='routes'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('signup/', views.signup, name='signup'),
     path('orm/<str:model>/', views.ORMViewSet.as_view({
         'get': 'list',
         'post': 'create',

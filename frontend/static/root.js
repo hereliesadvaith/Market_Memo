@@ -1,4 +1,7 @@
+import { Error } from "./pages/error/error";
+import { Home } from "./pages/home/home";
 import { Login } from "./pages/login/login";
+import { SignUp } from "./pages/signup/signup";
 import {
   Component,
   mount,
@@ -33,6 +36,11 @@ class Root extends Component {
         await this.refreshCookie(authTokens);
       }
     });
+    if (this.state.currentRoute !== "/login/" && !this.env.uid) {
+      if (this.state.currentRoute !== "/signup/") {
+        window.location.pathname = "/login/";
+      }
+    }
   }
 
   handleRouteChange(ev) {
@@ -103,16 +111,21 @@ class Root extends Component {
   }
 
   static template = xml`
-    <t t-if="state.currentRoute == '/'">
-      <h1>Vite + Owl + Django</h1>
-      <a href="/login">Login</a>
+    <t t-if="state.currentRoute == '/login/'">
+      <Login/>
+    </t>
+    <t t-elif="state.currentRoute == '/signup/'">
+      <SignUp/>
+    </t>
+    <t t-elif="state.currentRoute == '/'">
+      <Home/>
     </t>
     <t t-else="">
-      <Login/>
+      <Error/>
     </t>
 `;
 
-  static components = { Login };
+  static components = { Error, Home, Login, SignUp };
 }
 
 mount(Root, document.getElementById("root"));

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from importlib import import_module
 from rest_framework.decorators import api_view
@@ -61,6 +62,22 @@ def get_routes(request):
         "status": "operational"
     }
     return Response(routes)
+
+@api_view(['POST'])
+def signup(request):
+    """
+    To create user.
+    """
+    data = request.data
+    user = User.objects.create_user(
+        data.get('username'),
+        data.get('username'),
+        data.get('password')
+    )
+    user.first_name = data.get('fname')
+    user.last_name = data.get('lname')
+    user.save()
+    return Response()
 
 
 class ORMViewSet(ModelViewSet):
