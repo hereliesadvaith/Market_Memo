@@ -1,7 +1,6 @@
-import { Error } from "./pages/error/error";
-import { Home } from "./pages/home/home";
-import { Login } from "./pages/login/login";
-import { SignUp } from "./pages/signup/signup";
+import { Layout } from "./components/layout/layout";
+import { Login } from "./components/login/login";
+import { SignUp } from "./components/signup/signup";
 import {
   Component,
   mount,
@@ -117,15 +116,12 @@ class Root extends Component {
     <t t-elif="state.currentRoute == '/signup/'">
       <SignUp/>
     </t>
-    <t t-elif="state.currentRoute == '/'">
-      <Home/>
-    </t>
     <t t-else="">
-      <Error/>
+      <Layout/>
     </t>
 `;
 
-  static components = { Error, Home, Login, SignUp };
+  static components = { Layout, Login, SignUp };
 }
 
 mount(Root, document.getElementById("root"));
