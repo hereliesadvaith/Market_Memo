@@ -4,11 +4,10 @@ import { Header } from "./header/header";
 import { Component, xml } from "@odoo/owl";
 
 export class Layout extends Component {
-  setup() {}
+  static components = { Error, Home, Header };
 
   static template = xml`
-        <Header/>
-        <Home/>
-    `;
-  static components = { Error, Home, Header };
+    <Header/>
+    <Home/>
+  `;
 }

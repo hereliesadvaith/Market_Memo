@@ -12,6 +12,20 @@ import {
 } from "@odoo/owl";
 
 class Root extends Component {
+  static components = { Layout, Login, SignUp };
+
+  static template = xml`
+    <t t-if="state.currentRoute == '/login/'">
+      <Login/>
+    </t>
+    <t t-elif="state.currentRoute == '/signup/'">
+      <SignUp/>
+    </t>
+    <t t-else="">
+      <Layout/>
+    </t>
+  `;
+
   setup() {
     this.state = useState({
       currentRoute: window.location.pathname,
@@ -108,20 +122,6 @@ class Root extends Component {
     result["refresh"] = authTokens.refresh;
     this.setCookie("authTokens", JSON.stringify(result), 90);
   }
-
-  static template = xml`
-    <t t-if="state.currentRoute == '/login/'">
-      <Login/>
-    </t>
-    <t t-elif="state.currentRoute == '/signup/'">
-      <SignUp/>
-    </t>
-    <t t-else="">
-      <Layout/>
-    </t>
-`;
-
-  static components = { Layout, Login, SignUp };
 }
 
 mount(Root, document.getElementById("root"));
